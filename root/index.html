@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Какой твой тип внешности? 🌸 Тест за 2 минуты</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --primary: #FFB6C1;       /* light pink */
+      --primary-light: #FFE4E1; /* misty rose */
+      --primary-dark: #FF69B4;  /* hot pink */
+      --text: #5a4a42;          /* warm dark brown */
+      --bg: #fdf7f9;            /* very light pink */
+      --card-bg: #ffffff;
+      --border: #f0e0e6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', 'Nunito', system-ui, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      padding: 0.8rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary-light), #fff);
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.1);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "🌸";
+      position: absolute;
+      top: -20px;
+      right: 20px;
+      font-size: 4rem;
+      opacity: 0.1;
+    }
+    header::after {
+      content: "🎨";
+      position: absolute;
+      bottom: -10px;
+      left: 15%;
+      font-size: 3rem;
+      opacity: 0.08;
+    }
+    h1 {
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: #7a6a62;
+      font-weight: 400;
+    }
+
+    .intro {
+      background: var(--card-bg);
+      padding: 1.4rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+
+    .question {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 1.6rem;
+      margin-bottom: 1.4rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      position: relative;
+      border: 1px solid var(--border);
+    }
+    .q-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .q-number {
+      background: var(--primary);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 14px;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+    .q-text {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .option {
+      position: relative;
+    }
+    .option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .option label {
+      display: block;
+      padding: 15px 18px 15px 56px;
+      background: #fef9fa;
+      border: 2px solid #f5e9ed;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    .option label::before {
+      content: attr(data-letter);
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e0c5d0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .option input:checked + label {
+      border-color: var(--primary);
+      background: #fff5f8;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .option input:checked + label::before {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: var(--primary-dark);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 2rem 0 1.5rem;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+    }
+    .btn:hover:not(:disabled) {
+      background: #e6519c;
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(255, 105, 180, 0.4);
+    }
+    .btn:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Error message */
+    .error-message {
+      background: #fce8e6;
+      color: #c62828;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      display: none;
+      border-left: 4px solid #d32f2f;
+      font-weight: 500;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+    }
+    .modal-content {
+      background: white;
+      margin: 1.5rem auto;
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 800px;
+      max-height: 88vh;
+      overflow-y: auto;
+      animation: modalSlide 0.4s ease;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      position: relative;
+    }
+    @keyframes modalSlide {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #aaa;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .close:hover {
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 1.8rem;
+      position: relative;
+    }
+    .result-title {
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+      font-weight: 800;
+    }
+    .result-sub {
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* Seasonal backgrounds */
+    .season-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.06;
+      pointer-events: none;
+      background-repeat: repeat;
+      background-size: 80px;
+    }
+    .winter-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='2' fill='%236A5ACD'/%3E%3Cpath d='M50 0 L50 100 M0 50 L100 50 M0 0 L100 100 M100 0 L0 100' stroke='%236A5ACD' stroke-width='0.5'/%3E%3C/svg%3E"); }
+    .spring-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='20' cy='30' r='3' fill='%23FF9E85'/%3E%3Ccircle cx='70' cy='20' r='2' fill='%23FFD700'/%3E%3Ccircle cx='40' cy='60' r='4' fill='%2390EE90'/%3E%3Ccircle cx='80' cy='75' r='2.5' fill='%23FFB6C1'/%3E%3C/svg%3E"); }
+    .summer-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='30' cy='40' r='2' fill='%23A7C7E7'/%3E%3Ccircle cx='60' cy='25' r='1.5' fill='%23B0C4DE'/%3E%3Ccircle cx='20' cy='70' r='2.5' fill='%2387CEFA'/%3E%3Ccircle cx='80' cy='60' r='2' fill='%23ADD8E6'/%3E%3C/svg%3E"); }
+    .autumn-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,30 Q25,20 30,30 T40,30' stroke='%23D4A017' stroke-width='2' fill='none'/%3E%3Cpath d='M60,40 Q65,30 70,40 T80,40' stroke='%23CD853F' stroke-width='2' fill='none'/%3E%3Ccircle cx='25' cy='60' r='3' fill='%23FF8C00'/%3E%3Ccircle cx='75' cy='70' r='2.5' fill='%23A0522D'/%3E%3C/svg%3E"); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0;
+    }
+    .card {
+      border-radius: 16px;
+      padding: 1.8rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      color: var(--text);
+    }
+    .card-title::before {
+      content: '';
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+    .color-card .card-title::before { background: var(--primary-dark); }
+    .style-card .card-title::before { background: #8B4513; }
+
+    .tips h3 {
+      margin: 1.3rem 0 0.9rem;
+      font-size: 1.15rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+    }
+    .tips h3::before {
+      content: '•';
+      color: var(--primary);
+      margin-right: 8px;
+      font-size: 1.4rem;
+    }
+    .tips ul {
+      padding-left: 1.8rem;
+    }
+    .tips li {
+      margin-bottom: 0.65rem;
+      position: relative;
+    }
+    .tips li::before {
+      content: '✓';
+      position: absolute;
+      left: -1.6rem;
+      color: var(--primary-dark);
+      font-weight: bold;
+    }
+
+    /* Save button */
+    .save-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.2rem;
+      transition: background 0.2s;
+      box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+    }
+    .save-btn:hover {
+      background: #45a049;
+      transform: translateY(-1px);
+    }
+    .save-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #8a7a72;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #f0e0e6;
+    }
+
+    /* Result card for export */
+    #resultCard {
+      display: none;
+      padding: 2.5rem;
+      background: white;
+      border-radius: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    #resultCard::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 8px;
+    }
+    #seasonLabel { font-size: 1.1rem; color: white; padding: 4px 12px; border-radius: 0 0 8px 8px; display: inline-block; margin-top: -8px; }
+    #winter-card::before { background: #6A5ACD; }
+    #spring-card::before { background: #FF9E85; }
+    #summer-card::before { background: #A7C7E7; }
+    #autumn-card::before { background: #D4A017; }
+
+    #resultCard h2 {
+      font-size: 1.8rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    #resultCard p {
+      font-size: 1.1rem;
+      color: #6a5a52;
+      margin-bottom: 1.5rem;
+    }
+    #resultCard .divider {
+      height: 1px;
+      background: #f0e0e6;
+      margin: 1.5rem 0;
+    }
+    #resultCard .section {
+      margin-bottom: 1.2rem;
+    }
+    #resultCard .section h4 {
+      font-size: 1.15rem;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+    #resultCard .section h4::before {
+      content: '•';
+      color: var(--primary);
+      margin-right: 8px;
+    }
+
+    @media (max-width: 650px) {
+      .modal-content { margin: 1rem; padding: 1.5rem; }
+      h1 { font-size: 1.6rem; }
+      .result-title { font-size: 1.6rem; }
+      .result-sub { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌸 Какой твой тип внешности?</h1>
+      <p class="subtitle">Простой тест за 2 минуты</p>
+    </header>
+
+    <div class="intro">
+      <p>Отвечай интуитивно — как есть, без загара и окрашивания. В конце получишь свой <strong>цветотип</strong>, <strong>тираж</strong> и советы по стилю 😊</p>
+    </div>
+
+    <div class="error-message" id="errorMessage">
+      ❗ Пожалуйста, ответь на все вопросы (особенно вопрос 6 — там всего 2 варианта!)
+    </div>
+
+    <form id="beautyTest">
+      <!-- Вопрос 1 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">1</div>
+          <div class="q-text">Какого цвета твои волосы от природы?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q1a" name="q1" value="a">
+            <label for="q1a" data-letter="A">Светлые — белёсые, пшеничные, золотистые</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q1b" name="q1" value="b">
+            <label for="q1b" data-letter="B">Средние — русые, мышиные, пепельные</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q1c" name="q1" value="c">
+            <label for="q1c" data-letter="C">Тёплые — каштановые, медовые, рыжеватые</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q1d" name="q1" value="d">
+            <label for="q1d" data-letter="D">Тёмные — тёмно-русые, шоколадные, чёрные</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 2 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">2</div>
+          <div class="q-text">Какие глаза у тебя «в жизни», без подсветки?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q2a" name="q2" value="a">
+            <label for="q2a" data-letter="A">Очень светлые — голубые, серо-голубые, зелёные с «искрой»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q2b" name="q2" value="b">
+            <label for="q2b" data-letter="B">Серые, серо-зелёные, светло-карие</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q2c" name="q2" value="c">
+            <label for="q2c" data-letter="C">Яркие — ореховые, мёд, изумрудные, с «золотом» внутри</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q2d" name="q2" value="d">
+            <label for="q2d" data-letter="D">Тёмные — тёмно-карие, почти чёрные, насыщенно-зелёные</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 3 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">3</div>
+          <div class="q-text">Какая кожа у тебя зимой (без загара)?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q3a" name="q3" value="a">
+            <label for="q3a" data-letter="A">Очень светлая, легко краснеет, видны сосудики</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q3b" name="q3" value="b">
+            <label for="q3b" data-letter="B">Светлая, но ровная — не краснеет сильно</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q3c" name="q3" value="c">
+            <label for="q3c" data-letter="C">Светло-персиковая, тёплая, как «свежий бисквит»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q3d" name="q3" value="d">
+            <label for="q3d" data-letter="D">Нейтральная или оливковая — не розовая и не персиковая</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 4 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">4</div>
+          <div class="q-text">Когда ты загораешь — что происходит?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q4a" name="q4" value="a">
+            <label for="q4a" data-letter="A">Сначала краснею, потом еле-еле темнею</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q4b" name="q4" value="b">
+            <label for="q4b" data-letter="B">Почти не загораю — остаюсь светлой</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q4c" name="q4" value="c">
+            <label for="q4c" data-letter="C">Загораю быстро, ровно, «золотисто»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q4d" name="q4" value="d">
+            <label for="q4d" data-letter="D">Либо сразу темнею, либо почти не меняюсь</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 5 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">5</div>
+          <div class="q-text">Какой из этих оттенков часто хвалят на тебе в одежде?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q5a" name="q5" value="a">
+            <label for="q5a" data-letter="A">Персик, коралл, тёплый беж</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q5b" name="q5" value="b">
+            <label for="q5b" data-letter="B">Пастельно-розовый, серо-голубой, лаванда</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q5c" name="q5" value="c">
+            <label for="q5c" data-letter="C">Горчичный, оливковый, тёплый шоколад</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q5d" name="q5" value="d">
+            <label for="q5d" data-letter="D">Белый (чистый), чёрный, бордо, изумруд</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 6 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">6</div>
+          <div class="q-text">Если сравнить твои волосы и глаза — они…</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q6a" name="q6" value="a">
+            <label for="q6a" data-letter="A">Примерно одного уровня яркости (оба светлые или оба тёмные)</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q6c" name="q6" value="c">
+            <label for="q6c" data-letter="C">Очень разные (тёмные волосы + светлые глаза или наоборот)</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 7 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">7</div>
+          <div class="q-text">Какие у тебя брови без карандаша?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q7a" name="q7" value="a">
+            <label for="q7a" data-letter="A">Светлые, мягкие, почти «растворяются»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q7b" name="q7" value="b">
+            <label for="q7b" data-letter="B">Видны, но не бросаются в глаза</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q7c" name="q7" value="c">
+            <label for="q7c" data-letter="C">Чёткие, густые, «рисуют» лицо</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 8 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">8</div>
+          <div class="q-text">Твоё лицо в чёрно-белом фото:</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q8a" name="q8" value="a">
+            <label for="q8a" data-letter="A">Мягкое, без резких теней</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q8b" name="q8" value="b">
+            <label for="q8b" data-letter="B">Чёткое, но спокойное</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q8c" name="q8" value="c">
+            <label for="q8c" data-letter="C">Очень выразительное — скулы/глаза «играют»</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 9 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">9</div>
+          <div class="q-text">Какие формы в твоём лице преобладают?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q9a" name="q9" value="a">
+            <label for="q9a" data-letter="A">Округлые — мягкие скулы, плавный подбородок</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q9b" name="q9" value="b">
+            <label for="q9b" data-letter="B">Смешанные — не резкие, но не совсем круглые</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q9c" name="q9" value="c">
+            <label for="q9c" data-letter="C">Угловатые — выделяются скулы, линия подбородка чёткая</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 10 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">10</div>
+          <div class="q-text">Люди чаще говорят тебе:</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q10a" name="q10" value="a">
+            <label for="q10a" data-letter="A">«Какой(ая) милый(ая)», «уютный(ая)», «такой(ая) нежный(ая)»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q10b" name="q10" value="b">
+            <label for="q10b" data-letter="B">«Элегантный(ая)», «воспитанный(ая)», «всё сдержанно»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q10c" name="q10" value="c">
+            <label for="q10c" data-letter="C">«Харизматичный(ая)», «яркий(ая)», «все на тебя смотрят»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q10d" name="q10" value="d">
+            <label for="q10d" data-letter="D">«Задорный(ая)», «живой(ая)», «везде энергия»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q10e" name="q10" value="e">
+            <label for="q10e" data-letter="E">«Естественный(ая)», «здоровый(ая)», «всё просто и красиво»</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 11 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">11</div>
+          <div class="q-text">Как ты выглядишь в мешковатой одежде?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q11a" name="q11" value="a">
+            <label for="q11a" data-letter="A">«Теряюсь» — выгляжу меньше и бледнее</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q11b" name="q11" value="b">
+            <label for="q11b" data-letter="B">Скрываю достоинства — хочется подчеркнуть талию</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q11c" name="q11" value="c">
+            <label for="q11c" data-letter="C">Держу форму — но хочется чёткого кроя</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q11d" name="q11" value="d">
+            <label for="q11d" data-letter="D">Круто! Особенно если есть акцент (например, пояс или воротник)</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q11e" name="q11" value="e">
+            <label for="q11e" data-letter="E">Удобно и нормально — ничего не портится</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 12 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">12</div>
+          <div class="q-text">Твои жесты и походка скорее:</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q12a" name="q12" value="a">
+            <label for="q12a" data-letter="A">Плавные, медленные, с округлыми движениями</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q12b" name="q12" value="b">
+            <label for="q12b" data-letter="B">Точные, спокойные, без резких движений</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q12c" name="q12" value="c">
+            <label for="q12c" data-letter="C">Широкие, уверенные, «занимаю пространство»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q12d" name="q12" value="d">
+            <label for="q12d" data-letter="D">Быстрые, пружинистые, с неожиданными поворотами</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q12e" name="q12" value="e">
+            <label for="q12e" data-letter="E">Простые, прямые, «без пафоса»</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 13 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">13</div>
+          <div class="q-text">Что тебе не идёт, даже если модно?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q13a" name="q13" value="a">
+            <label for="q13a" data-letter="A">Грубая кожа, строгие пиджаки, чёрный минимализм</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q13b" name="q13" value="b">
+            <label for="q13b" data-letter="B">Много рюшей, блёсток, ярких принтов</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q13c" name="q13" value="c">
+            <label for="q13c" data-letter="C">Мягкие волны, пастель, «принцесс-стиль»</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q13d" name="q13" value="d">
+            <label for="q13d" data-letter="D">Классические юбки-карандаш, строгие блузки</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q13e" name="q13" value="e">
+            <label for="q13e" data-letter="E">Вычурные аксессуары, необычные силуэты</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 14 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">14</div>
+          <div class="q-text">Какой образ «твой» без усилий?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q14a" name="q14" value="a">
+            <label for="q14a" data-letter="A">Вязаный свитер + джинсы + кеды — и всё сияет</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q14b" name="q14" value="b">
+            <label for="q14b" data-letter="B">Прямое пальто + лодочки + сумка-тоут — идеально</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q14c" name="q14" value="c">
+            <label for="q14c" data-letter="C">Кожаная куртка + чёрные джинсы + ботильоны — wow</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q14d" name="q14" value="d">
+            <label for="q14d" data-letter="D">Джинсовая юбка + футболка с принтом + кроссовки — легко</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q14e" name="q14" value="e">
+            <label for="q14e" data-letter="E">Лён, хлопок, удобный крой — и ты «дома»</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вопрос 15 -->
+      <div class="question">
+        <div class="q-header">
+          <div class="q-number">15</div>
+          <div class="q-text">Любимый способ «оживить» лицо без макияжа?</div>
+        </div>
+        <div class="options">
+          <div class="option">
+            <input type="radio" id="q15a" name="q15" value="a">
+            <label for="q15a" data-letter="A">Румяна персикового оттенка</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q15b" name="q15" value="b">
+            <label for="q15b" data-letter="B">Лёгкий бронзер + тушь</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q15c" name="q15" value="c">
+            <label for="q15c" data-letter="C">Чёткие брови + помада</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q15d" name="q15" value="d">
+            <label for="q15d" data-letter="D">Тушь + яркий лак/серьги</label>
+          </div>
+          <div class="option">
+            <input type="radio" id="q15e" name="q15" value="e">
+            <label for="q15e" data-letter="E">Всё чистое — ухоженные брови и кожа</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn" id="submitBtn">Получить результат 🌸</button>
+    </form>
+
+    <div class="footer-note">
+      Результат основан на методике Кэрол Джексон и Дэвида Коллинза. Тест не заменяет консультацию стилиста.
+    </div>
+  </div>
+
+  <!-- Hidden result card for export -->
+  <div id="resultCard">
+    <h2 id="cardTitle">✨ Твой результат</h2>
+    <p id="cardResult">Загрузка...</p>
+    <div class="divider"></div>
+    <div class="section">
+      <h4 id="colorSection">Цветотип</h4>
+      <p id="colorDesc"></p>
+    </div>
+    <div class="section">
+      <h4 id="styleSection">Типаж</h4>
+      <p id="styleDesc"></p>
+    </div>
+    <div class="divider"></div>
+    <p style="text-align: center; font-size: 0.9rem; color: #888; margin-top: 1.5rem;">
+      Сохранено с любовью • Тест на типаж внешности
+    </p>
+  </div>
+
+  <!-- Modal Result -->
+  <div id="resultModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      
+      <div class="result-header">
+        <h2 class="result-title">✨ Твой результат:</h2>
+        <p class="result-sub" id="resultText">Загрузка...</p>
+      </div>
+
+      <div id="seasonalBackground" class="season-bg"></div>
+
+      <div id="resultContent"></div>
+
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <button class="save-btn" onclick="saveResult()" id="saveBtn">
+          📥 Сохранить как PDF / Изображение
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('beautyTest').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Проверка: все ли вопросы отвечены?
+      const questions = document.querySelectorAll('.question');
+      let allAnswered = true;
+      for (let i = 0; i < questions.length; i++) {
+        const qNum = i + 1;
+        const name = 'q' + qNum;
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+        if (!checked) {
+          allAnswered = false;
+          break;
+        }
+      }
+
+      if (!allAnswered) {
+        const errorDiv = document.getElementById('errorMessage');
+        errorDiv.style.display = 'block';
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          errorDiv.style.display = 'none';
+        }, 5000);
+        return;
+      }
+
+      // Собираем ответы
+      const formData = new FormData(this);
+      const answers = {};
+      for (let [key, value] of formData.entries()) {
+        answers[key] = value;
+      }
+
+      // Подсчёт по аналогии с onSubmit()
+      const counts = {a: 0, b: 0, c: 0, d: 0, e: 0};
+      for (let i = 1; i <= 15; i++) {
+        const ans = answers['q' + i];
+        if (ans && counts.hasOwnProperty(ans)) {
+          counts[ans]++;
+        }
+      }
+
+      // Цветотипы
+      const colorTypes = {a: 'Весна', b: 'Лето', c: 'Осень', d: 'Зима'};
+      let maxColor = 'a';
+      for (let key of ['a','b','c','d']) {
+        if (counts[key] > counts[maxColor]) maxColor = key;
+      }
+      const colorType = colorTypes[maxColor];
+
+      // Типажи
+      const styleTypes = {a: 'Романтик', b: 'Элегант', c: 'Драматик', d: 'Гамин', e: 'Натурал'};
+      let maxStyle = 'a';
+      for (let key of ['a','b','c','d','e']) {
+        if (counts[key] > counts[maxStyle]) maxStyle = key;
+      }
+      const styleType = styleTypes[maxStyle];
+
+      const fullResult = `${colorType} + ${styleType}`;
+      
+      // Показываем модальное окно
+      document.getElementById('resultText').textContent = fullResult;
+      
+      // Устанавливаем тематический фон
+      const bg = document.getElementById('seasonalBackground');
+      bg.className = 'season-bg';
+      if (colorType === 'Зима') bg.classList.add('winter-bg');
+      else if (colorType === 'Весна') bg.classList.add('spring-bg');
+      else if (colorType === 'Лето') bg.classList.add('summer-bg');
+      else if (colorType === 'Осень') bg.classList.add('autumn-bg');
+      
+      // Генерируем контент
+      document.getElementById('resultContent').innerHTML = generateResultHTML(colorType, styleType);
+      
+      // Готовим карточку для экспорта
+      prepareExportCard(colorType, styleType);
+      
+      // Показываем модалку
+      document.getElementById('resultModal').style.display = 'block';
+    });
+
+    function closeModal() {
+      document.getElementById('resultModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('resultModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+
+    function prepareExportCard(colorType, styleType) {
+      const card = document.getElementById('resultCard');
+      
+      // Цвет шапки
+      card.removeAttribute('id');
+      card.id = colorType.toLowerCase() + '-card';
+      
+      // Заголовок
+      document.getElementById('cardTitle').textContent = '✨ Твой результат';
+      document.getElementById('cardResult').textContent = `${colorType} + ${styleType}`;
+      
+      // Описания
+      const colorShort = {
+        'Весна': 'Тёплый, светлый, яркий. Ты сияешь в персике, коралле, золотистом.',
+        'Лето': 'Холодный, приглушённый, нежный. Ты в пастелях: серо-розовом, лаванде, мятном.',
+        'Осень': 'Тёплый, насыщенный, глубокий. Ты в земляных тонах: горчичном, оливковом, шоколадном.',
+        'Зима': 'Холодный, контрастный, яркий. Ты в чистых тонах: чёрном, белом, бордо, изумруде.'
+      };
+      
+      const styleShort = {
+        'Романтик': 'Мягкий, округлый, деликатный. Ты любишь нежность, изящество и женственность.',
+        'Элегант': 'Сдержанный, прямой, утончённый. Ты в лаконичных, изысканных образах.',
+        'Драматик': 'Крупный, контрастный, экспрессивный. Ты в смелых, выразительных решениях.',
+        'Гамин': 'Компактный, контрастный, озорной. Ты в игривых, энергичных, неожиданных образах.',
+        'Натурал': 'Крупный, мягкий, естественный. Ты в свободных, удобных, природных вещах.'
+      };
+      
+      document.getElementById('colorDesc').textContent = colorShort[colorType] || '';
+      document.getElementById('styleDesc').textContent = styleShort[styleType] || '';
+    }
+
+    async function saveResult() {
+      const btn = document.getElementById('saveBtn');
+      btn.disabled = true;
+      btn.innerHTML = '📷 Генерация...';
+      
+      try {
+        const card = document.getElementById('resultCard');
+        card.style.display = 'block';
+        
+        // Ждём рендеринга
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        const canvas = await html2canvas(card, {
+          scale: 2,
+          backgroundColor: null,
+          useCORS: true
+        });
+        
+        card.style.display = 'none';
+        
+        // Создаём ссылку для скачивания
+        const link = document.createElement('a');
+        link.download = `мой-результат-внешности-${new Date().toISOString().slice(0,10)}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        btn.innerHTML = '✅ Сохранено! Скачано как PNG';
+        setTimeout(() => {
+          btn.innerHTML = '📥 Сохранить как PDF / Изображение';
+          btn.disabled = false;
+        }, 2000);
+        
+      } catch (err) {
+        console.error('Ошибка при сохранении:', err);
+        btn.innerHTML = '❗ Ошибка. Попробуйте ещё раз';
+        setTimeout(() => {
+          btn.innerHTML = '📥 Сохранить как PDF / Изображение';
+          btn.disabled = false;
+        }, 3000);
+      }
+    }
+
+    function generateResultHTML(colorType, styleType) {
+      const colorDesc = {
+        'Весна': `
+          <p><strong>Весна</strong> — это тёплый, светлый, яркий цветотип 🌸</p>
+          <p>Ты сияешь в тёплых, прозрачных оттенках: персик, коралл, золотистый, светло-зелёный, тёплый розовый. Избегай холодных и пастельных тонов — они «гасят» твоё сияние.</p>
+          <div class="tips">
+            <h3>🎨 Макияж для Весны:</h3>
+            <ul>
+              <li>Тени: золотистые, персиковые, коричневые с золотым шиммером</li>
+              <li>Румяна: персиковые, абрикосовые, светло-розовые с золотистым отливом</li>
+              <li>Помада: коралловая, персиковая, светло-розовая</li>
+              <li>Тушь: коричневая или тёмно-коричневая (не чёрная!)</li>
+            </ul>
+
+            <h3>✂️ Стрижки:</h3>
+            <ul>
+              <li>Мягкие, слоистые стрижки с лёгкой текстурой</li>
+              <li>Боб с чёлкой (лёгкой, арочной)</li>
+              <li>Каре с градуировкой</li>
+              <li>Избегай: чётких линий, ультракоротких стрижек, гладких прямых стрижек без объёма</li>
+            </ul>
+
+            <h3>👗 Стиль:</h3>
+            <ul>
+              <li>Лёгкие ткани: шёлк, шифон, тонкий трикотаж</li>
+              <li>Акценты: жемчуг, золото, дерево</li>
+              <li>Обувь: бежевые, персиковые, золотистые оттенки</li>
+              <li>Идеальные вещи: сарафан с цветочным принтом, лёгкое пальто-тренч, юбка-солнце</li>
+            </ul>
+          </div>
+        `,
+        'Лето': `
+          <p><strong>Лето</strong> — это холодный, приглушённый, нежный цветотип ☀️</p>
+          <p>Тебе идут пастельные, мягкие, «пыльные» оттенки: серо-розовый, лаванда, мятный, серо-голубой, пепельный. Избегай ярких, насыщенных цветов — они «давят».</p>
+          <div class="tips">
+            <h3>🎨 Макияж для Лета:</h3>
+            <ul>
+              <li>Тени: серо-голубые, лавандовые, серо-розовые, матовые</li>
+              <li>Румяна: розово-серые, лавандовые</li>
+              <li>Помада: приглушённые розовые, вишнёвые, бордовые</li>
+              <li>Тушь: чёрная или тёмно-серая</li>
+            </ul>
+
+            <h3>✂️ Стрижки:</h3>
+            <ul>
+              <li>Гладкие, ухоженные стрижки</li>
+              <li>Каре (ровное или удлинённое)</li>
+              <li>Средняя длина с чётким пробором</li>
+              <li>Избегай: растрёпанных текстур, слишком объёмных стрижек</li>
+            </ul>
+
+            <h3>👗 Стиль:</h3>
+            <ul>
+              <li>Ткани: кашемир, трикотаж, гладкий хлопок</li>
+              <li>Акценты: серебро, жемчуг, стекло</li>
+              <li>Обувь: серые, пастельные, белые оттенки</li>
+              <li>Идеальные вещи: прямое пальто, юбка-карандаш, блузка с воротником-стойкой</li>
+            </ul>
+          </div>
+        `,
+        'Осень': `
+          <p><strong>Осень</strong> — это тёплый, насыщенный, глубокий цветотип 🍂</p>
+          <p>Ты расцветаешь в земляных, тёплых, насыщенных тонах: горчичный, оливковый, тёплый шоколад, терракота, изумруд. Холодные и пастельные оттенки делают тебя «усталой».</p>
+          <div class="tips">
+            <h3>🎨 Макияж для Осени:</h3>
+            <ul>
+              <li>Тени: тёплые коричневые, изумрудные, золотистые, бронзовые</li>
+              <li>Румяна: персиковые, терракотовые, коричнево-розовые</li>
+              <li>Помада: тёплые красные, коричнево-красные, охристые</li>
+              <li>Тушь: чёрная или тёмно-коричневая</li>
+            </ul>
+
+            <h3>✂️ Стрижки:</h3>
+            <ul>
+              <li>Текстурированные стрижки с объёмом</li>
+              <li>Лесенка, каскад</li>
+              <li>Удлинённое каре</li>
+              <li>Избегай: ультракоротких стрижек (если не хватает контраста), прямых чёлок</li>
+            </ul>
+
+            <h3>👗 Стиль:</h3>
+            <ul>
+              <li>Ткани: твид, замша, вельвет, лён</li>
+              <li>Акценты: медь, бронза, дерево, янтарь</li>
+              <li>Обувь: тёплые коричневые, бордовые, оливковые оттенки</li>
+              <li>Идеальные вещи: пальто оверсайз, юбка-трапеция, водолазка из кашемира</li>
+            </ul>
+          </div>
+        `,
+        'Зима': `
+          <p><strong>Зима</strong> — это холодный, контрастный, яркий цветотип ❄️</p>
+          <p>Ты эффектна в чистых, насыщенных, контрастных оттенках: чёрный, белый, бордо, изумруд, фиолетовый, истинно-красный. Мягкие и тёплые тона «размывают» твои черты.</p>
+          <div class="tips">
+            <h3>🎨 Макияж для Зимы:</h3>
+            <ul>
+              <li>Тени: чёрные, серебристые, изумрудные, фиолетовые</li>
+              <li>Румяна: яркие розовые, вишнёвые, холодные красные</li>
+              <li>Помада: ярко-красная, винная, тёмно-бордовая</li>
+              <li>Тушь: чёрная, густая</li>
+            </ul>
+
+            <h3>✂️ Стрижки:</h3>
+            <ul>
+              <li>Чёткие, графичные стрижки</li>
+              <li>Ультракороткие стрижки (пикси, боб)</li>
+              <li>Прямые стрижки с чётким пробором</li>
+              <li>Избегай: мягких волн, многослойных текстур без формы</li>
+            </ul>
+
+            <h3>👗 Стиль:</h3>
+            <ul>
+              <li>Ткани: атлас, бархат, гладкий шёлк, кожа</li>
+              <li>Акценты: серебро, сталь, чёрный жемчуг</li>
+              <li>Обувь: чёрная, белая, металлик</li>
+              <li>Идеальные вещи: чёрное платье-футляр, пальто с чётким силуэтом, брючный костюм</li>
+            </ul>
+          </div>
+        `
+      };
+
+      const styleDesc = {
+        'Романтик': `
+          <p><strong>Романтик</strong> — это мягкий, округлый, деликатный типаж 💕</p>
+          <p>Ты чувствуешь себя в своей тарелке в женственных, нежных, изящных образах. Жёсткость, угловатость и минимализм «съедают» твою харизму.</p>
+          <div class="tips">
+            <h3>💡 Ключевые слова:</h3>
+            <p>Мягкость • Изящество • Нежность • Деликатность • Прозрачность</p>
+
+            <h3>👗 Стиль для Романтика:</h3>
+            <ul>
+              <li>Мягкие ткани с драпировкой (шёлк, шифон, кружево)</li>
+              <li>Формы: округлые вырезы, юбки-солнце, плавные линии</li>
+              <li>Декор: рюши, складки, жемчуг, цветы</li>
+              <li>Избегай: прямых линий, жёстких тканей, минимализма</li>
+            </ul>
+
+            <h3>✂️ Причёска:</h3>
+            <ul>
+              <li>Мягкие волны, завитки</li>
+              <li>Чёлка (лёгкая, арочная)</li>
+              <li>Высокие причёски с мягкими локонами</li>
+            </ul>
+
+            <h3>💄 Макияж:</h3>
+            <ul>
+              <li>Акцент на глаза (но не резкий)</li>
+              <li>Розовые/персиковые тона</li>
+              <li>Блеск для губ</li>
+              <li>Естественные брови</li>
+            </ul>
+          </div>
+        `,
+        'Элегант': `
+          <p><strong>Элегант</strong> — это сдержанный, прямой, утончённый типаж 🌹</p>
+          <p>Ты выглядишь лучшее всего в лаконичных, изысканных, сбалансированных образах. Избыток деталей и вычурность «сбивают» твою гармонию.</p>
+          <div class="tips">
+            <h3>💡 Ключевые слова:</h3>
+            <p>Сдержанность • Пропорции • Утончённость • Баланс • Чистота линий</p>
+
+            <h3>👗 Стиль для Элеганта:</h3>
+            <ul>
+              <li>Классические силуэты (пальто, жакет, прямая юбка)</li>
+              <li>Ткани: кашемир, тонкий трикотаж, шерсть</li>
+              <li>Декор: минимум — аккуратная строчка, тонкая цепочка</li>
+              <li>Идеальные пропорции (талия подчёркнута, но не затянута)</li>
+            </ul>
+
+            <h3>✂️ Причёска:</h3>
+            <ul>
+              <li>Гладкие укладки</li>
+              <li>Чёткий пробор</li>
+              <li>Каре, боб</li>
+              <li>Низкий пучок</li>
+            </ul>
+
+            <h3>💄 Макияж:</h3>
+            <ul>
+              <li>Натуральный, ухоженный образ</li>
+              <li>Акцент — на брови и ресницы</li>
+              <li>Помада: приглушённые тона</li>
+            </ul>
+          </div>
+        `,
+        'Драматик': `
+          <p><strong>Драматик</strong> — это крупный, контрастный, экспрессивный типаж ⚡</p>
+          <p>Ты сияешь в смелых, ярких, выразительных образах. Мягкость, мелкие детали и пастель «растворяют» твою харизму.</p>
+          <div class="tips">
+            <h3>💡 Ключевые слова:</h3>
+            <p>Контраст • Драма • Масштаб • Экспрессия • Уверенность</p>
+
+            <h3>👗 Стиль для Драматика:</h3>
+            <ul>
+              <li>Крупные формы: широкие плечи, длинные линии, V-вырезы</li>
+              <li>Ткани: кожа, бархат, атлас, плотный трикотаж</li>
+              <li>Декор: крупная бижутерия, металлические цепи, геометрия</li>
+              <li>Чёрный, белый, насыщенные цвета</li>
+            </ul>
+
+            <h3>✂️ Причёска:</h3>
+            <ul>
+              <li>Чёткие линии</li>
+              <li>Ультракороткие стрижки</li>
+              <li>Высокие причёски, гладкий эффект мокрых волос</li>
+            </ul>
+
+            <h3>💄 Макияж:</h3>
+            <ul>
+              <li>Графичная подводка</li>
+              <li>Яркая помада</li>
+              <li>Чёткие брови</li>
+              <li>Контрастные тени</li>
+            </ul>
+          </div>
+        `,
+        'Гамин': `
+          <p><strong>Гамин</strong> — это компактный, контрастный, озорной типаж 🎪</p>
+          <p>Ты выглядишь лучше всего в игривых, неожиданных, энергичных образах. Слишком женственные или строгие вещи «гасят» твою искру.</p>
+          <div class="tips">
+            <h3>💡 Ключевые слова:</h3>
+            <p>Контраст • Игра • Энергия • Компактность • Непредсказуемость</p>
+
+            <h3>👗 Стиль для Гамина:</h3>
+            <ul>
+              <li>Контрастные комбинации (кожа + кружево, строгий верх + игривый низ)</li>
+              <li>Асимметрия, необычные детали</li>
+              <li>Яркие акценты: яркие носки, необычные пуговицы</li>
+              <li>Обувь: кеды, кроссовки, туфли на платформе</li>
+            </ul>
+
+            <h3>✂️ Причёска:</h3>
+            <ul>
+              <li>Короткие стрижки (пикси, гаврош)</li>
+              <li>Асимметричные чёлки</li>
+              <li>Яркие акценты: цветные пряди</li>
+            </ul>
+
+            <h3>💄 Макияж:</h3>
+            <ul>
+              <li>Яркие акценты (один глаз, яркие губы)</li>
+              <li>Тушь + графичная подводка</li>
+              <li>Брови: чёткие, но не слишком толстые</li>
+            </ul>
+          </div>
+        `,
+        'Натурал': `
+          <p><strong>Натурал</strong> — это крупный, мягкий, естественный типаж 🌿</p>
+          <p>Ты чувствуешь себя в своей тарелке в свободных, удобных, природных образах. Искусственность, вычурность и «надуманность» «давят».</p>
+          <div class="tips">
+            <h3>💡 Ключевые слова:</h3>
+            <p>Естественность • Свобода • Природа • Простота • Здоровье</p>
+
+            <h3>👗 Стиль для Натураля:</h3>
+            <ul>
+              <li>Свободные силуэты (оверсайз, трапеция)</li>
+              <li>Ткани: лён, хлопок, грубый трикотаж, джинса</li>
+              <li>Цвета: земляные, природные, нейтральные</li>
+              <li>Декор: минимум — дерево, камень, кожа</li>
+            </ul>
+
+            <h3>✂️ Причёска:</h3>
+            <ul>
+              <li>Естественные текстуры (волны, локоны)</li>
+              <li>Средняя и длинная длина</li>
+              <li>Чёлка: прямая или арочная, но не слишком короткая</li>
+            </ul>
+
+            <h3>💄 Макияж:</h3>
+            <ul>
+              <li>Минимум — тушь, корректор, тон</li>
+              <li>Акцент на здоровую кожу</li>
+              <li>Естественные брови</li>
+              <li>Блеск или бальзам для губ</li>
+            </ul>
+          </div>
+        `
+      };
+
+      return `
+        <div class="cards">
+          <div class="card color-card">
+            <h3 class="card-title">${colorType}</h3>
+            ${colorDesc[colorType] || '<p>Информация временно недоступна.</p>'}
+          </div>
+          <div class="card style-card">
+            <h3 class="card-title">${styleType}</h3>
+            ${styleDesc[styleType] || '<p>Информация временно недоступна.</p>'}
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f0e0e6;">
+          <p>🌸 Сохрани этот результат — он поможет тебе при выборе гардероба, макияжа и стрижки</p>
+          <button onclick="location.reload()" style="margin-top: 1rem; background: #8B4513; padding: 12px 24px; border-radius: 12px; color: white; border: none; cursor: pointer; font-weight: 600;">
+            Пройти тест ещё раз
+          </button>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
+
